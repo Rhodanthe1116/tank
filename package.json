@@ -17,12 +17,12 @@
     "vuex": "^3.6.2",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "@vue/cli-plugin-eslint": "^4.5.17"
-  },
-  "devDependencies": {
     "@babel/eslint-parser": "^7.18.2",
     "@vue/cli-plugin-babel": "^4.5.17",
     "@vue/cli-service": "^4.5.17",
+    "@vue/cli-plugin-eslint": "^4.5.17"
+  },
+  "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "vue-template-compiler": "^2.6.14"
