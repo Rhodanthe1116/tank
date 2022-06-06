@@ -3,7 +3,7 @@ import { Peer } from 'peerjs'
 
 const ROOM_ID = window.location.pathname.substring(1)
 
-function createVideoElement(id = '', muted = true) {
+function createVideoElement(id = '', muted = false) {
   const videoContainer = document.createElement('div')
   videoContainer.setAttribute('id', id)
   videoContainer.setAttribute(
