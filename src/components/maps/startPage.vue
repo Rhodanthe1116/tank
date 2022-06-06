@@ -1,7 +1,10 @@
 <template>
   <div
     id="startPage"
-    v-bind:style="{height: this.startPage.height+'px',width:this.startPage.width+'px'}"
+    v-bind:style="{
+      height: this.startPage.height + 'px',
+      width: this.startPage.width + 'px',
+    }"
   >
     <h1 id="hhh">TANK</h1>
     <div id="nameHolder1">
@@ -9,20 +12,26 @@
         Player 1
         <br />
       </h1>
-      <input v-model="$store.state.tank1.tank.name" placeholder="enter your name" />
+      <input
+        v-model="$store.state.tank1.tank.name"
+        placeholder="enter your name"
+      />
     </div>
     <div id="nameHolder2">
       <h1>
         Player 2
         <br />
       </h1>
-      <input v-model="$store.state.tank2.tank.name" placeholder="enter your name" />
+      <input
+        v-model="$store.state.tank2.tank.name"
+        placeholder="enter your name"
+      />
     </div>
 
     <button class="startPageButton" v-on:click="switchMap()">Enter</button>
     <button
       id="sound"
-      v-bind:class="{haveSound: this.$store.state.sound}"
+      v-bind:class="{ haveSound: this.$store.state.sound }"
       v-on:click="soundUp()"
     ></button>
 
@@ -31,43 +40,43 @@
 </template>
 
 <script>
-import $ from "jquery";
+import $ from 'jquery'
 
 export default {
-  name: "startPage",
+  name: 'startPage',
   components: {},
   data() {
     return {
       clicked: false,
-      text_direction: ""
-    };
+      text_direction: '',
+    }
   },
   methods: {
-    soundUp: function() {
-      this.$store.state.sound = !this.$store.state.sound;
+    soundUp: function () {
+      this.$store.state.sound = !this.$store.state.sound
     },
-    switchMap: function() {
+    switchMap: function () {
       if (!this.clicked) {
-        this.clicked = true;
-        $("#startPage").fadeOut(800, this.enter);
+        this.clicked = true
+        $('#startPage').fadeOut(800, this.enter)
       }
     },
-    enter: function() {
-      this.$store.state.mapNumber++;
-    }
+    enter: function () {
+      this.$store.state.mapNumber++
+    },
   },
   computed: {
-    startPage: function() {
-      return this.$store.state.startPage;
-    }
+    startPage: function () {
+      return this.$store.state.startPage
+    },
   },
-  created: function() {},
-  mounted: function() {
-    $("#startPage").hide();
-    $("#startPage").fadeIn(1000);
+  created: function () {},
+  mounted: function () {
+    $('#startPage').hide()
+    $('#startPage').fadeIn(1000)
   },
-  beforeDestroy() {}
-};
+  beforeDestroy() {},
+}
 </script>
 <style scoped>
 #nameHolder1 {

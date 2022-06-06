@@ -2,36 +2,41 @@
   <div
     id="treasure"
     class="treasures"
-    v-if = "this.treasure.droped"
-    v-bind:style="{height: this.treasure.height+'px',width:this.treasure.width+'px',marginTop:this.treasure.y+'px',marginLeft:this.treasure.x+'px'}"
+    v-if="this.treasure.droped"
+    v-bind:style="{
+      height: this.treasure.height + 'px',
+      width: this.treasure.width + 'px',
+      marginTop: this.treasure.y + 'px',
+      marginLeft: this.treasure.x + 'px',
+    }"
   ></div>
 </template>
 
 <script>
 export default {
-  name: "treasure",
+  name: 'treasure',
   components: {},
   data() {
     return {
-      text_direction: ""
-    };
+      text_direction: '',
+    }
   },
   methods: {},
   computed: {
-    treasure: function() {
-      return this.$store.state.treasures;
-    }
+    treasure: function () {
+      return this.$store.state.treasures
+    },
   },
-  created: function() {}
-};
+  created: function () {},
+}
 </script>
 <style scoped>
-#treasure{
+#treasure {
   border-color: blueviolet;
   border-style: outset;
   border-width: 2px;
   background: url(../../img/treasure.jpg);
   background-size: cover;
-    border-radius : 50%; 
-  }
+  border-radius: 50%;
+}
 </style>

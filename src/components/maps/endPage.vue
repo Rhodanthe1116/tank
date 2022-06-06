@@ -2,12 +2,19 @@
   <div
     id="endPage"
     v-show="this.showAll"
-    v-bind:style="{height: this.endPage.height+'px',width:this.endPage.width+'px',}"
+    v-bind:style="{
+      height: this.endPage.height + 'px',
+      width: this.endPage.width + 'px',
+    }"
   >
-    <div id="endPageImg" v-bind:class="{haveWinner:champ}">
-      <h1 id="winner" v-if="this.champ">&nbsp; winner: {{winner[0].tank.name}} &nbsp;</h1>
+    <div id="endPageImg" v-bind:class="{ haveWinner: champ }">
+      <h1 id="winner" v-if="this.champ">
+        &nbsp; winner: {{ winner[0].tank.name }} &nbsp;
+      </h1>
       <h1 id="noWinner" v-if="!this.champ">No winner!</h1>
-      <button id="restart" class="endPageButton" v-on:click="reset()">EXIT</button>
+      <button id="restart" class="endPageButton" v-on:click="reset()">
+        EXIT
+      </button>
     </div>
     <audio id="winner_audio" muted="muted">
       <source src="../../audio/winner_audio.wav" type="audio/wav" />
@@ -16,53 +23,53 @@
 </template>
 
 <script>
-import $ from "jquery";
-import resetState from "../../mixins/reset";
+import $ from 'jquery'
+import resetState from '../../mixins/reset'
 export default {
-  name: "endPage",
+  name: 'endPage',
   components: {},
   data() {
     return {
       showAll: false,
-      getWinner: false
-    };
+      getWinner: false,
+    }
   },
   methods: {
-    reset: function() {
-      $("#endPage").fadeOut(800, this.resetState);
+    reset: function () {
+      $('#endPage').fadeOut(800, this.resetState)
     },
-    show: function() {
-      this.showAll = true;
-    }
+    show: function () {
+      this.showAll = true
+    },
   },
   computed: {
-    winner: function() {
+    winner: function () {
       if (this.champ) {
-        return this.$store.state.winner;
+        return this.$store.state.winner
       }
-      return this.$store.state.tank1;
+      return this.$store.state.tank1
     },
-    endPage: function() {
-      return this.$store.state.endPage;
+    endPage: function () {
+      return this.$store.state.endPage
     },
-    champ: function() {
-      return this.$store.state.champ;
-    }
+    champ: function () {
+      return this.$store.state.champ
+    },
   },
   mixins: [resetState],
-  beforeCreate: function() {},
-  created: function() {},
-  mounted: function() {
-    this.show();
+  beforeCreate: function () {},
+  created: function () {},
+  mounted: function () {
+    this.show()
 
-    $("#endPage").fadeIn(1000);
+    $('#endPage').fadeIn(1000)
     if (this.champ) {
-      let a = $("#winner_audio")[0];
-      a.load();
-      a.play();
+      let a = $('#winner_audio')[0]
+      a.load()
+      a.play()
     }
-  }
-};
+  },
+}
 </script>
 <style scoped>
 #endPage {

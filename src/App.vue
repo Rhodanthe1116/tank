@@ -6,22 +6,21 @@
 </template>
 
 <script>
-import court from "./components/court";
+import court from './components/court'
 export default {
-  name: "App",
+  name: 'App',
   components: {
-  
-    court: court
+    court: court,
   },
   data() {
-    return {};
-  }
-};
+    return {}
+  },
+}
 </script>
 
 <style>
 #app {
-    background-color: rgb(255, 248, 183);
+  background-color: rgb(255, 248, 183);
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

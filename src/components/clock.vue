@@ -1,59 +1,64 @@
 <template>
-  <div id="count_down" v-if="countDown&&this.map>=1" v-bind:style="{color: this.color}">{{this.time}}</div>
+  <div
+    id="count_down"
+    v-if="countDown && this.map >= 1"
+    v-bind:style="{ color: this.color }"
+  >
+    {{ this.time }}
+  </div>
 </template>
 
 <script>
-var count_down;
+var count_down
 
-import checkWinner from "../mixins/checkWinner";
+import checkWinner from '../mixins/checkWinner'
 
 export default {
-  name: "clock",
+  name: 'clock',
   data() {
-    return { countDown: true };
+    return { countDown: true }
   },
   methods: {
-    startCountDown: function() {
+    startCountDown: function () {
       if (this.$store.state.count_down <= 0) {
-        window.clearInterval(count_down);
-        this.countDown = false;
-        this.checkWinner();
+        window.clearInterval(count_down)
+        this.countDown = false
+        this.checkWinner()
       }
-      this.$store.state.count_down--;
-    }
+      this.$store.state.count_down--
+    },
   },
   computed: {
-    map: function() {
-      return this.$store.state.mapNumber;
+    map: function () {
+      return this.$store.state.mapNumber
     },
-    time: function() {
-      return this.$store.state.count_down;
+    time: function () {
+      return this.$store.state.count_down
     },
-    color: function(){
-      if(this.$store.state.count_down<=15){
-        return "red";
+    color: function () {
+      if (this.$store.state.count_down <= 15) {
+        return 'red'
       }
-      return "white";
-    }
+      return 'white'
+    },
   },
-  created: function() {
-    count_down = setInterval(() => this.startCountDown(), 1000);
+  created: function () {
+    count_down = setInterval(() => this.startCountDown(), 1000)
   },
-  beforeDestroy: function() {
-    window.clearInterval(count_down);
+  beforeDestroy: function () {
+    window.clearInterval(count_down)
   },
-  mixins: [checkWinner]
-};
+  mixins: [checkWinner],
+}
 </script>
 <style scoped>
 #count_down {
-    top: 20%;
-    left: 48.5%;
-    text-align: center;
-    position: absolute;
-    margin: 0 auto;
-    display: inline-block;
-    font-size: 100px;
-    
+  top: 20%;
+  left: 48.5%;
+  text-align: center;
+  position: absolute;
+  margin: 0 auto;
+  display: inline-block;
+  font-size: 100px;
 }
 </style>

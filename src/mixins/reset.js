@@ -1,7 +1,7 @@
 export default {
-    methods: {
-        resetState: function () {
-            this.$store.commit("resetState");
-        }
-    }
+  methods: {
+    resetState: function () {
+      this.$store.commit('resetState')
+    },
+  },
 }

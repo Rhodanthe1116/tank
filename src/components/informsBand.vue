@@ -6,24 +6,24 @@
 </template>
 
 <script>
-import $ from "jquery";
-import resetState from "../mixins/reset";
+import $ from 'jquery'
+import resetState from '../mixins/reset'
 export default {
-  name: "informsBand",
+  name: 'informsBand',
   data() {
-    return {};
+    return {}
   },
   methods: {
-    reset: function() {
-      $("#informsBand").fadeOut(800);
+    reset: function () {
+      $('#informsBand').fadeOut(800)
 
-      $("#court").fadeOut(800, this.resetState);
-    }
+      $('#court').fadeOut(800, this.resetState)
+    },
   },
   computed: {},
   created() {},
-  mixins: [resetState]
-};
+  mixins: [resetState],
+}
 </script>
 <style scoped>
 #bandReset {
@@ -36,7 +36,7 @@ export default {
   position: absolute;
   background-color: transparent;
   border-color: violet;
-  color:white;
+  color: white;
 }
 #informsBand {
   width: 100%;

@@ -2,44 +2,54 @@
   <div
     v-show="this.showAll"
     id="chooseMapPage"
-    v-bind:style="{height: this.chooseMapPage.height+'px',width:this.chooseMapPage.width+'px'}"
+    v-bind:style="{
+      height: this.chooseMapPage.height + 'px',
+      width: this.chooseMapPage.width + 'px',
+    }"
   >
     <div id="chooseYourMap"></div>
     <div id="keyMap" v-if="this.guide">
-      <h1 class="names" id="name1">{{$store.state.tank2.tank.name}}</h1>
-      <h1 class="names" id="name2">{{$store.state.tank1.tank.name}}</h1>
+      <h1 class="names" id="name1">{{ $store.state.tank2.tank.name }}</h1>
+      <h1 class="names" id="name2">{{ $store.state.tank1.tank.name }}</h1>
     </div>
     <div id="rule" v-if="this.rule">
       <h1>規則</h1>
       <h2>勝利條件</h2>
       <h3>
         1. 擊中敵方會減少敵方血量，若生命歸零則為輸家。
-        <br />2. 若時間到時無人死亡，則分數高者獲勝
-        <br />3. 若分數相同，則血量高者獲勝
-        <br />4. 若血量也相同，則平手
+        <br />2. 若時間到時無人死亡，則分數高者獲勝 <br />3.
+        若分數相同，則血量高者獲勝 <br />4. 若血量也相同，則平手
       </h3>
       <h2>其他</h2>
       <h3>
         1. 若控制無反應，請點擊畫面中間
-        <br />2. 若有調整參數，則不保證遊戲正常運作:))
-        <br />3. 強烈建議按f11進入全螢幕遊玩
+        <br />2. 若有調整參數，則不保證遊戲正常運作:)) <br />3.
+        強烈建議按f11進入全螢幕遊玩
       </h3>
     </div>
     <button
       id="openRule"
-      v-if="!this.guide&&!this.modify"
+      v-if="!this.guide && !this.modify"
       v-on:click="openRule()"
-    >{{openRuleButton}}</button>
+    >
+      {{ openRuleButton }}
+    </button>
 
     <button
       id="openModify"
-      v-if="!this.guide&&!this.rule"
+      v-if="!this.guide && !this.rule"
       v-on:click="openModify()"
-    >{{openModifyButton}}</button>
+    >
+      {{ openModifyButton }}
+    </button>
 
     <div id="modify" v-if="this.modify">
-      <button id="saveModify" v-on:click="saveModify()">{{saveModifyButton}}</button>
-      <button id="recallModify" v-on:click="recallModify()">{{recallModifyButton}}</button>
+      <button id="saveModify" v-on:click="saveModify()">
+        {{ saveModifyButton }}
+      </button>
+      <button id="recallModify" v-on:click="recallModify()">
+        {{ recallModifyButton }}
+      </button>
       <div id="itemHolder1" class="itemHolder">
         <h1>
           Player 1
@@ -313,176 +323,195 @@
         />
       </div>
     </div>
-    <button id="button_map1" class="chooseMapPageButton" v-on:click="switchMap(1)"></button>
-    <button id="button_map2" class="chooseMapPageButton" v-on:click="switchMap(2)"></button>
-    <button id="button_map3" class="chooseMapPageButton" v-on:click="switchMap(3)"></button>
-    <button id="button_map4" class="chooseMapPageButton" v-on:click="switchMap(4)"></button>
-    <button v-show="!this.modify&&!this.rule" id="showMap" v-on:click="showMap()">{{guideButton}}</button>
+    <button
+      id="button_map1"
+      class="chooseMapPageButton"
+      v-on:click="switchMap(1)"
+    ></button>
+    <button
+      id="button_map2"
+      class="chooseMapPageButton"
+      v-on:click="switchMap(2)"
+    ></button>
+    <button
+      id="button_map3"
+      class="chooseMapPageButton"
+      v-on:click="switchMap(3)"
+    ></button>
+    <button
+      id="button_map4"
+      class="chooseMapPageButton"
+      v-on:click="switchMap(4)"
+    ></button>
+    <button
+      v-show="!this.modify && !this.rule"
+      id="showMap"
+      v-on:click="showMap()"
+    >
+      {{ guideButton }}
+    </button>
   </div>
 </template>
 
 <script>
-import $ from "jquery";
+import $ from 'jquery'
 export default {
-  name: "chooseMapPage",
+  name: 'chooseMapPage',
   components: {},
   data() {
     return {
       showAll: false,
-      text_direction: "",
-      guideButton: "How to control?",
-      openModifyButton: "調整參數",
-      openRuleButton: "How to win?",
+      text_direction: '',
+      guideButton: 'How to control?',
+      openModifyButton: '調整參數',
+      openRuleButton: 'How to win?',
       mapNumber: null,
-      saveModifyButton: "儲存為偏好參數",
-      recallModifyButton: "使用偏好參數",
+      saveModifyButton: '儲存為偏好參數',
+      recallModifyButton: '使用偏好參數',
       rule: false,
       guide: false,
-      modify: false
-    };
+      modify: false,
+    }
   },
   methods: {
-    switchMap: function(mapNumber) {
-      this.mapNumber= mapNumber;
-      $("#chooseMapPage").fadeOut(800,this.enter);
+    switchMap: function (mapNumber) {
+      this.mapNumber = mapNumber
+      $('#chooseMapPage').fadeOut(800, this.enter)
     },
-    enter: function(){
-      this.$store.state.mapNumber = this.mapNumber;
-
+    enter: function () {
+      this.$store.state.mapNumber = this.mapNumber
     },
-    showMap: function() {
+    showMap: function () {
       if (!this.guide) {
-        this.guideButton = "Close";
+        this.guideButton = 'Close'
       } else {
-        this.guideButton = "How to control?";
+        this.guideButton = 'How to control?'
       }
-      this.guide = !this.guide;
+      this.guide = !this.guide
     },
-    openRule: function() {
+    openRule: function () {
       if (!this.rule) {
-        this.openRuleButton = "Close";
+        this.openRuleButton = 'Close'
       } else {
-        this.openRuleButton = "How to win?";
+        this.openRuleButton = 'How to win?'
       }
-      this.rule = !this.rule;
+      this.rule = !this.rule
     },
-    openModify: function() {
+    openModify: function () {
       if (!this.modify) {
-        this.openModifyButton = "Save & Close";
+        this.openModifyButton = 'Save & Close'
       } else {
-        this.openModifyButton = "調整參數";
+        this.openModifyButton = '調整參數'
       }
-      this.modify = !this.modify;
-      this.typeConvert();
+      this.modify = !this.modify
+      this.typeConvert()
     },
-    saveModify: function() {
-      this.$store.commit("saveModify");
-      this.typeConvert();
+    saveModify: function () {
+      this.$store.commit('saveModify')
+      this.typeConvert()
     },
-    recallModify: function() {
-      this.$store.commit("recallModify");
-      this.typeConvert();
+    recallModify: function () {
+      this.$store.commit('recallModify')
+      this.typeConvert()
     },
-    typeConvert: function() {
-      this.$store.state.count_down = Number(this.$store.state.count_down);
+    typeConvert: function () {
+      this.$store.state.count_down = Number(this.$store.state.count_down)
       this.$store.state.treasures.speed = Number(
         this.$store.state.treasures.speed
-      );
+      )
       this.$store.state.shrinkingSpeed = Number(
         this.$store.state.shrinkingSpeed
-      );
+      )
       this.$store.state.tank1.tank.life = Number(
         this.$store.state.tank1.tank.life
-      );
+      )
       this.$store.state.tank1.tank.revivingTime = Number(
         this.$store.state.tank1.tank.revivingTime
-      );
+      )
       this.$store.state.tank1.tank.step = Number(
         this.$store.state.tank1.tank.step
-      );
+      )
       this.$store.state.tank1.cannon.degStep = Number(
         this.$store.state.tank1.cannon.degStep
-      );
+      )
       this.$store.state.bullet1.special_speed[0] = Number(
         this.$store.state.bullet1.special_speed[0]
-      );
+      )
       this.$store.state.bullet1.special_speed[1] = Number(
         this.$store.state.bullet1.special_speed[1]
-      );
+      )
       this.$store.state.bullet1.special_speed[2] = Number(
         this.$store.state.bullet1.special_speed[2]
-      );
+      )
       this.$store.state.bullet1.damage[0] = Number(
         this.$store.state.bullet1.damage[0]
-      );
+      )
       this.$store.state.bullet1.damage[1] = Number(
         this.$store.state.bullet1.damage[1]
-      );
+      )
       this.$store.state.bullet1.damage[2] = Number(
         this.$store.state.bullet1.damage[2]
-      );
+      )
       this.$store.state.bullet1.mineExplodeTime = Number(
         this.$store.state.bullet1.mineExplodeTime
-      );
+      )
       this.$store.state.tank2.tank.revivingTime = Number(
         this.$store.state.tank2.tank.revivingTime
-      );
+      )
       this.$store.state.tank2.tank.life = Number(
         this.$store.state.tank2.tank.life
-      );
+      )
       this.$store.state.tank2.tank.step = Number(
         this.$store.state.tank2.tank.step
-      );
+      )
       this.$store.state.tank2.cannon.degStep = Number(
         this.$store.state.tank2.cannon.degStep
-      );
+      )
       this.$store.state.bullet2.special_speed[0] = Number(
         this.$store.state.bullet2.special_speed[0]
-      );
+      )
       this.$store.state.bullet2.special_speed[1] = Number(
         this.$store.state.bullet2.special_speed[1]
-      );
+      )
       this.$store.state.bullet2.special_speed[2] = Number(
         this.$store.state.bullet2.special_speed[2]
-      );
+      )
       this.$store.state.bullet2.damage[0] = Number(
         this.$store.state.bullet2.damage[0]
-      );
+      )
       this.$store.state.bullet2.damage[1] = Number(
         this.$store.state.bullet2.damage[1]
-      );
+      )
       this.$store.state.bullet2.damage[2] = Number(
         this.$store.state.bullet2.damage[2]
-      );
+      )
       this.$store.state.bullet2.mineExplodeTime = Number(
         this.$store.state.bullet2.mineExplodeTime
-      );
+      )
     },
-    show: function() {
-      this.showAll = true;
-    }
+    show: function () {
+      this.showAll = true
+    },
   },
   computed: {
-    chooseMapPage: function() {
-      return this.$store.state.chooseMapPage;
-    }
+    chooseMapPage: function () {
+      return this.$store.state.chooseMapPage
+    },
   },
   beforeCreate() {},
-  created: function() {
-  
-  },
-  mounted: function (){
-      this.show();
-    $("#chooseMapPage").fadeIn(800);
+  created: function () {},
+  mounted: function () {
+    this.show()
+    $('#chooseMapPage').fadeIn(800)
   },
   beforeDestroy() {
     this.$store.state.tank1.tank.x =
-      this.$store.getters.currentMap.width - this.$store.state.tank1.tank.width;
+      this.$store.getters.currentMap.width - this.$store.state.tank1.tank.width
     this.$store.state.tank1.tank.y =
       this.$store.getters.currentMap.height -
-      this.$store.state.tank1.tank.height;
-  }
-};
+      this.$store.state.tank1.tank.height
+  },
+}
 </script>
 <style scoped>
 #button_map1 {
@@ -511,8 +540,7 @@ export default {
   left: 10%;
 }
 #chooseMapPage {
-  
-    top: 13%;
+  top: 13%;
 
   border-radius: 30px;
   margin: 0 auto;
@@ -559,18 +587,18 @@ export default {
 }
 #showMap {
   border-radius: 20px;
-    border-width: 2px;
-    border-color: rgb(255, 238, 89);
-    border-style: solid;
-    color: white;
-    background: transparent;
-    position: absolute;
-    height: 15%;
-    width: 26%;
-    z-index: 501;
-    margin-left: -86%;
-    margin-top: 44%;
-    font-size: 50px;
+  border-width: 2px;
+  border-color: rgb(255, 238, 89);
+  border-style: solid;
+  color: white;
+  background: transparent;
+  position: absolute;
+  height: 15%;
+  width: 26%;
+  z-index: 501;
+  margin-left: -86%;
+  margin-top: 44%;
+  font-size: 50px;
 }
 .names {
   display: block;
@@ -595,64 +623,64 @@ export default {
   width: 1000px;
 }
 #openRule {
- border-radius: 20px;
-    border-width: 2px;
-    border-color: rgb(136, 211, 255);
-    border-style: solid;
-    color: white;
-    background: transparent;
-    position: absolute;
-    height: 15%;
-    width: 26%;
-    z-index: 501;
-    margin-left: 33%;
-    margin-top: 44%;
-    font-size: 50px;
+  border-radius: 20px;
+  border-width: 2px;
+  border-color: rgb(136, 211, 255);
+  border-style: solid;
+  color: white;
+  background: transparent;
+  position: absolute;
+  height: 15%;
+  width: 26%;
+  z-index: 501;
+  margin-left: 33%;
+  margin-top: 44%;
+  font-size: 50px;
 }
 #openModify {
-    border-radius: 20px;
-    border-width: 2px;
-    border-color: rgb(255, 144, 222);
-    border-style: solid;
-    color: white;
-    background: transparent;
-    position: absolute;
-    height: 15%;
-    width: 26%;
-    z-index: 501;
-    margin-left: 64%;
-    margin-top: 44%;
-    font-size: 50px;
+  border-radius: 20px;
+  border-width: 2px;
+  border-color: rgb(255, 144, 222);
+  border-style: solid;
+  color: white;
+  background: transparent;
+  position: absolute;
+  height: 15%;
+  width: 26%;
+  z-index: 501;
+  margin-left: 64%;
+  margin-top: 44%;
+  font-size: 50px;
 }
 #saveModify {
- border-radius: 20px;
-    border-width: 2px;
-    border-color: rgb(136, 211, 255);
-    border-style: solid;
-    color: white;
-    background: transparent;
-    position: absolute;
-    height: 15%;
-    width: 26%;
-    z-index: 501;
-       margin-left: -48%;
-    margin-top: 53.5%;
-    font-size: 50px;
+  border-radius: 20px;
+  border-width: 2px;
+  border-color: rgb(136, 211, 255);
+  border-style: solid;
+  color: white;
+  background: transparent;
+  position: absolute;
+  height: 15%;
+  width: 26%;
+  z-index: 501;
+  margin-left: -48%;
+  margin-top: 53.5%;
+  font-size: 50px;
 }
 #recallModify {
   border-radius: 20px;
-    border-width: 2px;
-    border-color: rgb(255, 238, 89);
-    border-style: solid;
-    color: white;
-    background: transparent;
-    position: absolute;
-    height: 15%;
-    width: 26%;
-    z-index: 501;
-          margin-left: -14%;
-    margin-top: 53.5%;
-    font-size: 50px;
+  border-width: 2px;
+  border-color: rgb(255, 238, 89);
+  border-style: solid;
+  color: white;
+  background: transparent;
+  position: absolute;
+  height: 15%;
+  width: 26%;
+  z-index: 501;
+  margin-left: -14%;
+  margin-top: 53.5%;
+  font-size: 50px;
 }
 #modify {
   background-color: white;
