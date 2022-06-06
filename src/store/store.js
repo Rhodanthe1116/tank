@@ -14,7 +14,7 @@ export const store = new Vuex.Store({
       mine1: [true, true],
       mine2: [true, true],
       maxType: 3,
-      mapNumber: -1,
+      mapNumber: 2,
       startPage: {
         width: 1500,
         height: 800,
@@ -292,7 +292,7 @@ export const store = new Vuex.Store({
     mine1: [true, true],
     mine2: [true, true],
     maxType: 3,
-    mapNumber: -1,
+    mapNumber: 2,
     startPage: {
       width: 1500,
       height: 800,
@@ -571,7 +571,7 @@ export const store = new Vuex.Store({
         mine1: [true, true],
         mine2: [true, true],
         maxType: 3,
-        mapNumber: -1,
+        mapNumber: 2,
         startPage: {
           width: 1500,
           height: 800,
@@ -901,6 +901,34 @@ export const store = new Vuex.Store({
       state.tank1.cannon.counterClockWise = false
       state.tank2.cannon.clockWise = false
       state.tank2.cannon.counterClockWise = false
+    },
+    setRemoteState(state, param) {
+      const newState = param[0]
+      let remoteTankNum = param[1]
+      const myTankNum = remoteTankNum === 1 ? 2 : 1
+
+      state.winner = newState.winner ?? state.winner
+      state.champ = newState.champ ?? state.champ
+      state.count_down =
+        myTankNum === 1 ? state.count_down : newState.count_down
+      state['tank' + remoteTankNum] = {
+        ...newState['tank' + remoteTankNum],
+        tank: {
+          ...newState['tank' + remoteTankNum].tank,
+          life: state['tank' + remoteTankNum].tank.life,
+        },
+      }
+      state['tank' + myTankNum] = {
+        ...state['tank' + myTankNum],
+        tank: {
+          ...state['tank' + myTankNum].tank,
+          life: newState['tank' + myTankNum].tank.life,
+        },
+      }
+
+      state['bullet' + remoteTankNum] = {
+        ...newState['bullet' + remoteTankNum],
+      }
     },
     moveTank: (state, param) => {
       let direction = param[0]

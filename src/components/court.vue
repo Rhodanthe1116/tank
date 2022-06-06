@@ -9,28 +9,29 @@
     @keyup.right="controlPad('stopTank', 'right', 1)"
     @keyup.left="controlPad('stopTank', 'left', 1)"
     @keyup.up="controlPad('stopTank', 'up', 1)"
-    @keyup.down="controlPad('stopTank', 'down', 1)"
-    @keydown.68="controlPad('moveTank', 'right', 2)"
-    @keydown.65="controlPad('moveTank', 'left', 2)"
-    @keydown.87="controlPad('moveTank', 'up', 2)"
-    @keydown.83="controlPad('moveTank', 'down', 2)"
-    @keyup.68="controlPad('stopTank', 'right', 2)"
-    @keyup.65="controlPad('stopTank', 'left', 2)"
-    @keyup.87="controlPad('stopTank', 'up', 2)"
-    @keyup.83="controlPad('stopTank', 'down', 2)"
+    @keyup.down="controlPad('stopTank', 'down', tankNum)"
+    @keydown.68="controlPad('moveTank', 'right', tankNum)"
+    @keydown.65="controlPad('moveTank', 'left', tankNum)"
+    @keydown.87="controlPad('moveTank', 'up', tankNum)"
+    @keydown.83="controlPad('moveTank', 'down', tankNum)"
+    @keyup.68="controlPad('stopTank', 'right', tankNum)"
+    @keyup.65="controlPad('stopTank', 'left', tankNum)"
+    @keyup.87="controlPad('stopTank', 'up', tankNum)"
+    @keyup.83="controlPad('stopTank', 'down', tankNum)"
     @keydown.102="controlPad('rotateCannon', 'clockWise', 1)"
     @keyup.102="controlPad('stopCannon', 'clockWise', 1)"
     @keydown.100="controlPad('rotateCannon', 'counterClockWise', 1)"
     @keyup.100="controlPad('stopCannon', 'counterClockWise', 1)"
-    @keydown.74="controlPad('rotateCannon', 'clockWise', 2)"
-    @keyup.74="controlPad('stopCannon', 'clockWise', 2)"
-    @keydown.71="controlPad('rotateCannon', 'counterClockWise', 2)"
-    @keyup.71="controlPad('stopCannon', 'counterClockWise', 2)"
-    @keydown.enter="fire1()"
-    @keydown.107="switchWeapon1()"
-    @keydown.16="switchWeapon2()"
-    @keydown.space="fire2()"
+    @keydown.74="controlPad('rotateCannon', 'clockWise', tankNum)"
+    @keyup.74="controlPad('stopCannon', 'clockWise', tankNum)"
+    @keydown.71="controlPad('rotateCannon', 'counterClockWise', tankNum)"
+    @keyup.71="controlPad('stopCannon', 'counterClockWise', tankNum)"
+    @keydown.enter="fire(1)"
+    @keydown.107="switchWeapon(tankNum)"
+    @keydown.16="switchWeapon(tankNum)"
+    @keydown.space="fire(tankNum)"
   >
+    <p>{{ tankNum }}</p>
     <informsBand v-if="mapNumber >= 1">
       <inform1></inform1>
       <clock></clock>
@@ -52,6 +53,7 @@
 
 <script>
 import $ from 'jquery'
+import { io } from 'socket.io-client'
 
 import { bus } from '../main'
 import tank1 from './tank1'
@@ -67,6 +69,28 @@ import startPage from './maps/startPage'
 import endPage from './maps/endPage'
 import chooseMapPage from './maps/chooseMapPage'
 import resetState from '../mixins/reset'
+import checkWinner from '../mixins/checkWinner'
+const main = {}
+const event = {
+  server: {
+    connected: 'connected',
+    player2Connected: 'player2Connected',
+    remotePlayerChanged: 'remotePlayerChanged',
+  },
+  client: {
+    playerChanged: 'playerChanged',
+  },
+}
+
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+})
+
+const roomId = window.location.pathname.substring(1)
+const tankNum = parseInt(params['tank-num'])
+const remoteTankNum = tankNum === 1 ? 2 : 1
+
+let syncRemotePlayerInterval
 export default {
   components: {
     tank1,
@@ -92,6 +116,26 @@ export default {
         this.text_direction = direction
       }
     },
+    syncRemotePlayer: function () {
+      const remoteTankNum = tankNum === 1 ? 2 : 1
+      main.socket.emit(event.client.playerChanged, {
+        winner: this.$store.state.winner,
+        champ: this.$store.state.champ,
+        count_down: this.$store.state.count_down,
+        tankNum: tankNum,
+        ['tank' + remoteTankNum]: this.$store.state['tank' + remoteTankNum],
+        ['tank' + tankNum]: this.$store.state['tank' + tankNum],
+        ['bullet' + tankNum]: this.$store.state['bullet' + tankNum],
+      })
+    },
+    switchWeapon: function (tankNum) {
+      if (
+        ++this.$store.state['bullet' + tankNum].tmpType >
+        this.$store.state.maxType
+      ) {
+        this.$store.state['bullet' + tankNum].tmpType = 1
+      }
+    },
     switchWeapon1: function () {
       if (++this.$store.state.bullet1.tmpType > this.$store.state.maxType) {
         this.$store.state.bullet1.tmpType = 1
@@ -101,6 +145,9 @@ export default {
       if (++this.$store.state.bullet2.tmpType > this.$store.state.maxType) {
         this.$store.state.bullet2.tmpType = 1
       }
+    },
+    fire: function (tankNum) {
+      bus.$emit('fire' + tankNum, 'nothing')
     },
     fire1: function () {
       bus.$emit('fire1', 'nothing')
@@ -112,6 +159,9 @@ export default {
       this.$store.state.mapNumber--
       console.log(this.$store.state.mapNumber)
     },
+    // setTank: function (tank, tank_number) {
+    //   this.$store.commit('setTank', [tank, tank_number])
+    // },
   },
   computed: {
     currentMap: function () {
@@ -132,9 +182,49 @@ export default {
     mapNumber: function () {
       return this.$store.state.mapNumber
     },
+    tankNum: function () {
+      return tankNum
+    },
   },
   mixins: [resetState],
-  created: function () {},
+  created: function () {
+    const compo = this
+
+    main.socket = io(':8081', {
+      query: {
+        roomId: roomId,
+        newGameId: 'tank',
+      },
+    })
+
+    main.socket.on('connected', function (players) {
+      main.players = players
+      const myId = main.socket.id
+
+      Object.keys(players).forEach(function (id) {
+        if (players[id].playerId === myId) {
+          console.log('myId: ' + myId)
+          // addPlayer(main, players[id], myNameEle)
+        } else {
+          // addOtherPlayers(main, players[id])
+        }
+      })
+
+      // onConnected(main, myId)
+
+      console.log('connected')
+      // Game
+      // addGameEvent(main)
+      syncRemotePlayerInterval = setInterval(() => {
+        compo.syncRemotePlayer()
+      }, 1000 / 30)
+    })
+
+    main.socket.on(event.server.remotePlayerChanged, function (remoteState) {
+      compo.$store.commit('setRemoteState', [remoteState, remoteTankNum])
+      // checkWinner()
+    })
+  },
   mounted() {
     $('#copy').hide()
     $('#copy').fadeIn(1000)
