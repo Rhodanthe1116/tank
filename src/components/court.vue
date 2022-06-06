@@ -1,53 +1,81 @@
 <template>
   <div
-    id="court_container"
-    tabindex="-1"
-    @keydown.right="controlPad('moveTank', 'right', 1)"
-    @keydown.left="controlPad('moveTank', 'left', 1)"
-    @keydown.up="controlPad('moveTank', 'up', 1)"
-    @keydown.down="controlPad('moveTank', 'down', 1)"
-    @keyup.right="controlPad('stopTank', 'right', 1)"
-    @keyup.left="controlPad('stopTank', 'left', 1)"
-    @keyup.up="controlPad('stopTank', 'up', 1)"
-    @keyup.down="controlPad('stopTank', 'down', tankNum)"
-    @keydown.68="controlPad('moveTank', 'right', tankNum)"
-    @keydown.65="controlPad('moveTank', 'left', tankNum)"
-    @keydown.87="controlPad('moveTank', 'up', tankNum)"
-    @keydown.83="controlPad('moveTank', 'down', tankNum)"
-    @keyup.68="controlPad('stopTank', 'right', tankNum)"
-    @keyup.65="controlPad('stopTank', 'left', tankNum)"
-    @keyup.87="controlPad('stopTank', 'up', tankNum)"
-    @keyup.83="controlPad('stopTank', 'down', tankNum)"
-    @keydown.102="controlPad('rotateCannon', 'clockWise', 1)"
-    @keyup.102="controlPad('stopCannon', 'clockWise', 1)"
-    @keydown.100="controlPad('rotateCannon', 'counterClockWise', 1)"
-    @keyup.100="controlPad('stopCannon', 'counterClockWise', 1)"
-    @keydown.74="controlPad('rotateCannon', 'clockWise', tankNum)"
-    @keyup.74="controlPad('stopCannon', 'clockWise', tankNum)"
-    @keydown.71="controlPad('rotateCannon', 'counterClockWise', tankNum)"
-    @keyup.71="controlPad('stopCannon', 'counterClockWise', tankNum)"
-    @keydown.enter="fire(1)"
-    @keydown.107="switchWeapon(tankNum)"
-    @keydown.16="switchWeapon(tankNum)"
-    @keydown.space="fire(tankNum)"
+    v-bind:style="{
+      display: 'flex',
+    }"
   >
-    <p>{{ tankNum }}</p>
-    <informsBand v-if="mapNumber >= 1">
-      <inform1></inform1>
-      <clock></clock>
-      <inform2></inform2>
-    </informsBand>
+    <div
+      v-bind:style="{
+        // transform: 'scale(0.6)',
+      }"
+      id="court_container"
+      tabindex="-1"
+      @keydown.right="controlPad('moveTank', 'right', 1)"
+      @keydown.left="controlPad('moveTank', 'left', 1)"
+      @keydown.up="controlPad('moveTank', 'up', 1)"
+      @keydown.down="controlPad('moveTank', 'down', 1)"
+      @keyup.right="controlPad('stopTank', 'right', 1)"
+      @keyup.left="controlPad('stopTank', 'left', 1)"
+      @keyup.up="controlPad('stopTank', 'up', 1)"
+      @keyup.down="controlPad('stopTank', 'down', tankNum)"
+      @keydown.68="controlPad('moveTank', 'right', tankNum)"
+      @keydown.65="controlPad('moveTank', 'left', tankNum)"
+      @keydown.87="controlPad('moveTank', 'up', tankNum)"
+      @keydown.83="controlPad('moveTank', 'down', tankNum)"
+      @keyup.68="controlPad('stopTank', 'right', tankNum)"
+      @keyup.65="controlPad('stopTank', 'left', tankNum)"
+      @keyup.87="controlPad('stopTank', 'up', tankNum)"
+      @keyup.83="controlPad('stopTank', 'down', tankNum)"
+      @keydown.102="controlPad('rotateCannon', 'clockWise', 1)"
+      @keyup.102="controlPad('stopCannon', 'clockWise', 1)"
+      @keydown.100="controlPad('rotateCannon', 'counterClockWise', 1)"
+      @keyup.100="controlPad('stopCannon', 'counterClockWise', 1)"
+      @keydown.74="controlPad('rotateCannon', 'clockWise', tankNum)"
+      @keyup.74="controlPad('stopCannon', 'clockWise', tankNum)"
+      @keydown.71="controlPad('rotateCannon', 'counterClockWise', tankNum)"
+      @keyup.71="controlPad('stopCannon', 'counterClockWise', tankNum)"
+      @keydown.enter="fire(1)"
+      @keydown.107="switchWeapon(tankNum)"
+      @keydown.16="switchWeapon(tankNum)"
+      @keydown.space="fire(tankNum)"
+    >
+      <p>{{ tankNum }}</p>
+      <informsBand v-if="mapNumber >= 1">
+        <inform1></inform1>
+        <clock></clock>
+        <inform2></inform2>
+      </informsBand>
 
-    <startPage v-if="mapNumber == -1"></startPage>
-    <endPage v-if="mapNumber == -2"></endPage>
-    <chooseMapPage v-if="mapNumber == 0"></chooseMapPage>
-    <map1 v-if="mapNumber >= 1">
-      <bullet1></bullet1>
-      <bullet2></bullet2>
-      <tank1></tank1>
-      <tank2></tank2>
-    </map1>
-    <p id="copy">copyright ©2020 tank-vue.js jimmystereo</p>
+      <startPage v-if="mapNumber == -1"></startPage>
+      <endPage v-if="mapNumber == -2"></endPage>
+      <chooseMapPage v-if="mapNumber == 0"></chooseMapPage>
+      <map1 v-if="mapNumber >= 1">
+        <bullet1></bullet1>
+        <bullet2></bullet2>
+        <tank1></tank1>
+        <tank2></tank2>
+      </map1>
+
+      <p id="copy">copyright ©2020 tank-vue.js jimmystereo</p>
+    </div>
+
+    <div id="video-grid"></div>
+    <div id="chat-room">
+      <ul id="messages"></ul>
+      <form id="message-form" action="">
+        <input
+          id="player-name"
+          type="text"
+          placeholder="Name"
+          name="palyerName"
+          maxlength="30"
+        />
+        <div style="display: flex">
+          <input id="m" autocomplete="off" />
+          <button class="btn btn-dark">Send</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -70,6 +98,7 @@ import endPage from './maps/endPage'
 import chooseMapPage from './maps/chooseMapPage'
 import resetState from '../mixins/reset'
 import checkWinner from '../mixins/checkWinner'
+import * as WebRTC from '../webrtc'
 const main = {}
 const event = {
   server: {
@@ -122,6 +151,7 @@ export default {
         winner: this.$store.state.winner,
         champ: this.$store.state.champ,
         count_down: this.$store.state.count_down,
+        name: this.$store.state['tank' + tankNum].tank.name,
         tankNum: tankNum,
         ['tank' + remoteTankNum]: this.$store.state['tank' + remoteTankNum],
         ['tank' + tankNum]: this.$store.state['tank' + tankNum],
@@ -210,7 +240,7 @@ export default {
         }
       })
 
-      // onConnected(main, myId)
+      WebRTC.onConnected(main, myId)
 
       console.log('connected')
       // Game
