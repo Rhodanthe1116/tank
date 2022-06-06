@@ -220,7 +220,7 @@ export default {
   created: function () {
     const compo = this
 
-    main.socket = io(':8081', {
+    main.socket = io(process.env.VUE_APP_SOCKET_URL ?? ':8081', {
       query: {
         roomId: roomId,
         newGameId: 'tank',
